@@ -1,0 +1,118 @@
+/* Imposta altezza e larghezza del 100% su html e body */
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
+body {
+    background-image: url('../uploads/sfondo.png');
+    background-size: cover; /* Adatta l'immagine all'intera pagina */
+    background-repeat: no-repeat; /* Non ripetere l'immagine */
+    background-position: center; /* Centra l'immagine */
+    background-attachment: fixed;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+/* Imposta il contenitore principale per occupare tutto lo schermo */
+.full-screen-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Distribuisce il contenuto tra header e footer */
+    min-height: 100vh; /* Occupazione dell'intero viewport */
+}
+
+.card {
+    border: none;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    overflow: hidden;
+    transition: transform 0.2s ease-in-out;
+    min-height: 100%; /* Forza l'altezza minima */
+
+}
+
+.card:hover {
+    transform: scale(1.03);
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.card-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.card-img-top {
+    object-fit: cover; /* Ritaglia l'immagine senza distorcerla */
+    height: 200px; /* Altezza uniforme per tutte le immagini */
+    width: 100%; /* Adatta l'immagine alla larghezza della card */
+}
+
+.card-img-top-login {
+    object-fit: cover; /* Ritaglia l'immagine senza distorcerla */
+    height: 500px; /* Altezza uniforme per tutte le immagini */
+    width: 100%; /* Adatta l'immagine alla larghezza della card */
+}
+
+
+.btn-rounded {
+    border-radius: 50px;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.btn-outline-primary {
+    color: #27bcbc;
+    border-color: #27bcbc;
+}
+
+.btn-outline-primary:hover {
+    background-color: #27bcbc;
+    border-color: #27bcbc;
+    color: white;
+}
+
+.btn-primary {
+    background-color: #27bcbc;
+    border-color: #27bcbc;
+}
+
+.btn-primary:hover {
+    background-color: #138496;
+    border-color: #117a8b;
+}
+
+.navbar-light .navbar-brand {
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+
+.navbar:hover {
+    background-color: #fff !important;
+    transition: background-color 0.3s ease;
+}
+
+.navbar-light .nav-link {
+    color: black;
+}
+
+.navbar-light .nav-link:hover {
+    color: #27bcbc;
+}
+
+.navbar-toggler-icon {
+    background-color: #27bcbc; /* Icona del toggler */
+}
+
+.card-header {
+    background-color: #27bcbc; /* Arancione */
+    color: white; /* Testo bianco */
+}
+
+#materiali {
+    color: white;
+}
