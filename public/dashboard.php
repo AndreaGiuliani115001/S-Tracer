@@ -34,7 +34,8 @@ $ordini = Ordini::getAll($conn);
                         <div class="card-header">
                             <div class="d-flex justify-content-between align-items-center">
                                 <!-- Paragrafo a sinistra -->
-                                <h5 class="card-title mb-0">Ordine: <?= htmlspecialchars($ordine['numero_ordine']) ?></h5>
+                                <h5 class="card-title mb-0">
+                                    Ordine: <?= htmlspecialchars($ordine['numero_ordine']) ?></h5>
 
                                 <!-- Bottoni a destra -->
                                 <div class="btn-group" role="group">
@@ -53,18 +54,24 @@ $ordini = Ordini::getAll($conn);
                         </div>
                         <div class="card-body">
                             <p class="card-text">
-                                <strong>Matricola:</strong> <?= htmlspecialchars($ordine['matricola']) ?></p>
-                            <p class="card-text">
                                 <strong>Progetto:</strong> <?= htmlspecialchars($ordine['progetto_nome'] ?? 'Non associato') ?>
                             </p>
                             <p class="card-text "><i class="fas fa-calendar-alt text-warning"></i> <strong>Data di
+                                    Creazione:</strong> <?= htmlspecialchars($ordine['created_at']) ?></p>
+                            <p class="card-text "><i class="fas fa-calendar-alt text-warning"></i> <strong>Data di
                                     Consegna:</strong> <?= htmlspecialchars($ordine['data_di_consegna']) ?></p>
-                            <?php if ($ordine['ddt']): ?>
+                            <?php if ($ordine['ddt'] && $ordine['ordine']): ?>
                                 <div class="btn-group" role="group">
                                     <button type="button" class="btn btn-primary btn btn-rounded">
                                         <a href="<?= htmlspecialchars($ordine['ddt']) ?>"
                                            class="btn-rounded m-1">
                                             <i class="fas fa-file-alt"></i> DDT
+                                        </a>
+                                    </button>
+                                    <button type="button" class="btn btn-primary btn btn-rounded">
+                                        <a href="<?= htmlspecialchars($ordine['ordine']) ?>"
+                                           class="btn-rounded m-1">
+                                            <i class="fas fa-file-alt"></i> Ordine
                                         </a>
                                     </button>
                                     <button type="button" class="btn btn-primary btn btn-rounded">
@@ -74,10 +81,49 @@ $ordini = Ordini::getAll($conn);
                                         </a>
                                     </button>
                                 </div>
-                            <?php else: ?>
+                            <?php elseif (!$ordine['ddt'] && $ordine['ordine']): ?>
                                 <div class="btn-group" role="group">
                                     <button type="button" class="btn btn-danger btn btn-rounded">
-                                        <a class="btn-rounded m-1"> DDT non disponibile.</a>
+                                        <a class="btn-rounded m-1">X</a>
+                                    </button>
+                                    <button type="button" class="btn btn-primary btn btn-rounded">
+                                        <a href="<?= htmlspecialchars($ordine['ordine']) ?>"
+                                           class="btn-rounded m-1">
+                                            <i class="fas fa-file-alt"></i> Ordine
+                                        </a>
+                                    </button>
+                                    <button type="button" class="btn btn-primary btn btn-rounded">
+                                        <a href="dashboard_progetti.php?ordine_id=<?= $ordine['id'] ?>"
+                                           class="btn-rounded m-1">
+                                            <i class="fas fa-folder"></i> Progetti
+                                        </a>
+                                    </button>
+                                </div>
+                            <?php elseif (!$ordine['ordine'] && $ordine['ddt']): ?>
+                                <div class="btn-group" role="group">
+                                    <button type="button" class="btn btn-primary btn btn-rounded">
+                                        <a href="<?= htmlspecialchars($ordine['ddt']) ?>"
+                                           class="btn-rounded m-1">
+                                            <i class="fas fa-file-alt"></i> DDT
+                                        </a>
+                                    </button>
+                                    <button type="button" class="btn btn-danger btn btn-rounded">
+                                        <a class="btn-rounded m-1">X</a>
+                                    </button>
+                                    <button type="button" class="btn btn-primary btn btn-rounded">
+                                        <a href="dashboard_progetti.php?ordine_id=<?= $ordine['id'] ?>"
+                                           class="btn-rounded m-1">
+                                            <i class="fas fa-folder"></i> Progetti
+                                        </a>
+                                    </button>
+                                </div>
+                            <?php elseif (!$ordine['ordine'] && !$ordine['ddt']): ?>
+                                <div class="btn-group" role="group">
+                                    <button type="button" class="btn btn-danger btn btn-rounded">
+                                        <a class="btn-rounded m-1">X</a>
+                                    </button>
+                                    <button type="button" class="btn btn-danger btn btn-rounded">
+                                        <a class="btn-rounded m-1">X</a>
                                     </button>
                                     <button type="button" class="btn btn-primary btn btn-rounded">
                                         <a href="dashboard_progetti.php?ordine_id=<?= $ordine['id'] ?>"

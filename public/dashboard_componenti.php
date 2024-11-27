@@ -20,6 +20,17 @@ if (!$attivita_id || !$progetto_id) {
 
 // Recupera i dati dei componenti, operazioni e checklist
 $data = Componenti::getComponentiOperazioniChecklist($conn, $attivita_id, $progetto_id);
+
+// Aggiunta del controllo per redirect diretto alla checklist
+$componenti_count = count(array_unique(array_column($data, 'componente_id')));
+$operazioni_count = count(array_unique(array_column($data, 'operazione_id')));
+$checklist_count = count(array_unique(array_column($data, 'checklist_id')));
+
+if ($componenti_count === 1 && $operazioni_count === 1 && $checklist_count === 1) {
+    $checklist_id = $data[0]['checklist_id'];
+    header("Location: checklist.php?checklist_id=$checklist_id&progetto_id=$progetto_id&attivita_id=$attivita_id&ordine_id=$ordine_id&stato=$stato&check=1");
+    exit;
+}
 ?>
 
 <!DOCTYPE html>
@@ -62,6 +73,12 @@ $current_componente = $row['componente_id']; ?>
             <!-- Paragrafo a sinistra -->
             <h4 class="mb-0"><?= htmlspecialchars($row['componente_nome']) ?></h4>
 
+            <?php if($row['componente_id'] == 2 && $attivita_id == 3): ?>
+                <a href="assets/uploads/QC.pdf" class="btn btn-success" >
+                    PDF Controllo Qualità
+                </a>
+            <?php endif; ?>
+
             <!-- Bottoni a destra -->
             <div class="btn-group" role="group">
                 <button type="button" class="btn btn-success btn-rounded">
@@ -92,7 +109,7 @@ $current_componente = $row['componente_id']; ?>
                         <h5 class="card-title"><?= htmlspecialchars($row['operazione_nome']) ?></h5>
                         <div class="d-flex flex-wrap gap-2 justify-content-center">
                             <?php if (!empty($row['checklist_nome'])): ?>
-                                <a href="checklist.php?checklist_id=<?= $row['checklist_id'] ?>"
+                                <a href="checklist.php?checklist_id=<?= $row['checklist_id'] ?>&progetto_id=<?=$progetto_id?>&attivita_id=<?=$attivita_id?>&ordine_id=<?= $ordine_id ?>&stato=<?= $stato ?>"
                                    class="btn btn-outline-primary btn-lg btn-rounded">
                                     <i class="fas fa-list"></i>
                                     <?= htmlspecialchars($row['checklist_nome']) ?>
