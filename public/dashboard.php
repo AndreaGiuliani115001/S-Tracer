@@ -5,7 +5,7 @@ require_once '../autoload.php';
 require_once '../includes/navbar.php';
 
 // Recupera tutti gli ordini
-$ordini = Ordini::getAll($conn);
+$linee_produzione = LineeProduzione::getAll($conn);
 ?>
 
 <!DOCTYPE html>
@@ -16,136 +16,72 @@ $ordini = Ordini::getAll($conn);
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/style.css">
-    <title>Dashboard Ordini</title>
+    <title>Dashboard Linee di Produzione</title>
 </head>
 <body>
 <div class="full-screen-container">
     <div class="container mt-4">
         <div class="card shadow-sm mb-4">
             <div class="card-body text-center">
-                <h4>Totale Ordini</h4>
-                <h5><?= count($ordini) ?></h5>
+                <h4>Totale Linee di Produzione</h4>
+                <h5><?= count($linee_produzione) ?></h5>
             </div>
         </div>
         <div class="row">
-            <?php foreach ($ordini as $ordine): ?>
+            <?php foreach ($linee_produzione as $linea_produzione): ?>
                 <div class="col-md-4 mb-4">
                     <div class="card shadow-sm h-100">
                         <div class="card-header">
                             <div class="d-flex justify-content-between align-items-center">
                                 <!-- Paragrafo a sinistra -->
                                 <h5 class="card-title mb-0">
-                                    Ordine: <?= htmlspecialchars($ordine['numero_ordine']) ?></h5>
+                                    <?= htmlspecialchars($linea_produzione['nome']) ?></h5>
 
                                 <!-- Bottoni a destra -->
                                 <div class="btn-group" role="group">
-                                    <button type="button" class="btn btn-warning btn-rounded">
-                                        <a href="#?progetto_id=<?= $ordine['id'] ?>" class="btn-rounded">
-                                            <i class="fas fa-pencil-alt"></i>
+                                    <button type="button" class="btn btn-warning btn-rounded" data-bs-toggle="modal"
+                                            data-bs-target="#editModal">
+                                        <a onclick="editLinea(<?= $linea_produzione['id'] ?>, '<?= $linea_produzione['nome'] ?>')"
+                                           class="btn-rounded">
+                                            <i class="fas fa-pencil-alt text-white"></i>
                                         </a>
                                     </button>
-                                    <button type="button" class="btn btn-danger btn-rounded">
-                                        <a href="#?progetto_id=<?= $ordine['id'] ?>" class="btn-rounded">
-                                            <i class="fas fa-trash"></i>
+                                    <button type="button" class="btn btn-danger btn-rounded" data-bs-toggle="modal"
+                                            data-bs-target="#deleteModal">
+                                        <a onclick="deleteLinea(<?= $linea_produzione['id'] ?>)" class="btn-rounded">
+                                            <i class="fas fa-trash text-white"></i>
                                         </a>
                                     </button>
                                 </div>
                             </div>
                         </div>
                         <div class="card-body">
-                            <p class="card-text">
-                                <strong>Progetto:</strong> <?= htmlspecialchars($ordine['progetto_nome'] ?? 'Non associato') ?>
-                            </p>
-                            <p class="card-text "><i class="fas fa-calendar-alt text-warning"></i> <strong>Data di
-                                    Creazione:</strong> <?= htmlspecialchars($ordine['created_at']) ?></p>
-                            <p class="card-text "><i class="fas fa-calendar-alt text-warning"></i> <strong>Data di
-                                    Consegna:</strong> <?= htmlspecialchars($ordine['data_di_consegna']) ?></p>
-                            <?php if ($ordine['ddt'] && $ordine['ordine']): ?>
-                                <div class="btn-group" role="group">
-                                    <button type="button" class="btn btn-primary btn btn-rounded">
-                                        <a href="<?= htmlspecialchars($ordine['ddt']) ?>"
-                                           class="btn-rounded m-1">
-                                            <i class="fas fa-file-alt"></i> DDT
-                                        </a>
-                                    </button>
-                                    <button type="button" class="btn btn-primary btn btn-rounded">
-                                        <a href="<?= htmlspecialchars($ordine['ordine']) ?>"
-                                           class="btn-rounded m-1">
-                                            <i class="fas fa-file-alt"></i> Ordine
-                                        </a>
-                                    </button>
-                                    <button type="button" class="btn btn-primary btn btn-rounded">
-                                        <a href="dashboard_progetti.php?ordine_id=<?= $ordine['id'] ?>"
-                                           class="btn-rounded m-1">
-                                            <i class="fas fa-folder"></i> Progetti
-                                        </a>
-                                    </button>
-                                </div>
-                            <?php elseif (!$ordine['ddt'] && $ordine['ordine']): ?>
-                                <div class="btn-group" role="group">
-                                    <button type="button" class="btn btn-danger btn btn-rounded">
-                                        <a class="btn-rounded m-1">X</a>
-                                    </button>
-                                    <button type="button" class="btn btn-primary btn btn-rounded">
-                                        <a href="<?= htmlspecialchars($ordine['ordine']) ?>"
-                                           class="btn-rounded m-1">
-                                            <i class="fas fa-file-alt"></i> Ordine
-                                        </a>
-                                    </button>
-                                    <button type="button" class="btn btn-primary btn btn-rounded">
-                                        <a href="dashboard_progetti.php?ordine_id=<?= $ordine['id'] ?>"
-                                           class="btn-rounded m-1">
-                                            <i class="fas fa-folder"></i> Progetti
-                                        </a>
-                                    </button>
-                                </div>
-                            <?php elseif (!$ordine['ordine'] && $ordine['ddt']): ?>
-                                <div class="btn-group" role="group">
-                                    <button type="button" class="btn btn-primary btn btn-rounded">
-                                        <a href="<?= htmlspecialchars($ordine['ddt']) ?>"
-                                           class="btn-rounded m-1">
-                                            <i class="fas fa-file-alt"></i> DDT
-                                        </a>
-                                    </button>
-                                    <button type="button" class="btn btn-danger btn btn-rounded">
-                                        <a class="btn-rounded m-1">X</a>
-                                    </button>
-                                    <button type="button" class="btn btn-primary btn btn-rounded">
-                                        <a href="dashboard_progetti.php?ordine_id=<?= $ordine['id'] ?>"
-                                           class="btn-rounded m-1">
-                                            <i class="fas fa-folder"></i> Progetti
-                                        </a>
-                                    </button>
-                                </div>
-                            <?php elseif (!$ordine['ordine'] && !$ordine['ddt']): ?>
-                                <div class="btn-group" role="group">
-                                    <button type="button" class="btn btn-danger btn btn-rounded">
-                                        <a class="btn-rounded m-1">X</a>
-                                    </button>
-                                    <button type="button" class="btn btn-danger btn btn-rounded">
-                                        <a class="btn-rounded m-1">X</a>
-                                    </button>
-                                    <button type="button" class="btn btn-primary btn btn-rounded">
-                                        <a href="dashboard_progetti.php?ordine_id=<?= $ordine['id'] ?>"
-                                           class="btn-rounded m-1">
-                                            <i class="fas fa-folder"></i> Progetti
-                                        </a>
-                                    </button>
-                                </div>
+                            <?php if ($linea_produzione['foto'] == NULL): ?>
+                                <img src="assets/uploads/placeholder.png" class="card-img-top" alt="placeholder.png">
+                            <?php else: ?>
+                                <img src="assets/uploads/<?= htmlspecialchars($linea_produzione['foto']) ?>"
+                                     class="card-img-top"
+                                     alt="<?= htmlspecialchars($linea_produzione['foto']) ?>">
                             <?php endif; ?>
+                            <br>
+                            <button type="button" class="btn btn-primary btn-rounded">
+                                <a href="dashboard_progetti.php?linea_produzione_id=<?= $linea_produzione['id'] ?>"
+                                   class="btn-rounded">
+                                    <i class="fas fas fa-folder text-white"></i> Progetti
+                                </a>
+                            </button>
                         </div>
                     </div>
                 </div>
             <?php endforeach; ?>
             <!-- Card per aggiungere un nuovo componente -->
             <div class="col mb-4">
-                <div class="card shadow-sm d-flex justify-content-center align-items-center">
-                    <a href="#" class="text-decoration-none text-dark">
-                        <div class="d-flex flex-column justify-content-center align-items-center">
-                            <i class="fas fa-plus fa-3x" style="color: #27bcbc;"></i>
-                            <h5 class="mt-2">Aggiungi Ordine</h5>
-                        </div>
-                    </a>
+                <div class="card shadow-sm d-flex justify-content-center align-items-center p-4"
+                     data-bs-toggle="modal" data-bs-target="#createModal" style="cursor: pointer;">
+                    <div class="d-flex flex-column justify-content-center align-items-center">
+                        <i class="fas fa-plus fa-3x"></i>
+                        <h5 class="mt-2">Aggiungi Linea</h5>
+                    </div>
                 </div>
             </div>
         </div>
@@ -156,5 +92,24 @@ $ordini = Ordini::getAll($conn);
 <?php require_once '../includes/footer.php'; ?>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Include i modali -->
+<?php include 'modals/linea_produzione/modal_create.php'; ?>
+<?php include 'modals/linea_produzione/modal_edit.php'; ?>
+<?php include 'modals/linea_produzione/modal_delete.php'; ?>
+
+<script>
+
+    function editLinea(id, nome) {
+        document.getElementById('edit_id').value = id;
+        document.getElementById('edit_nome').value = nome;
+    }
+
+    function deleteLinea(id) {
+        document.getElementById('delete_id').value = id;
+    }
+</script>
+
 </body>
 </html>
+

@@ -5,11 +5,11 @@ html, body {
 }
 
 body {
-    background-image: url('../uploads/sfondo.png');
-    background-size: cover; /* Adatta l'immagine all'intera pagina */
-    background-repeat: no-repeat; /* Non ripetere l'immagine */
-    background-position: center; /* Centra l'immagine */
-    background-attachment: fixed;
+    background-color: #dfe5ea;
+    /*background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed;*/
 }
 
 a {
@@ -17,15 +17,15 @@ a {
     color: inherit;
 }
 
-/* Imposta il contenitore principale per occupare tutto lo schermo */
 .full-screen-container {
     display: flex;
     flex-direction: column;
-    justify-content: space-between; /* Distribuisce il contenuto tra header e footer */
-    min-height: 100vh; /* Occupazione dell'intero viewport */
+    justify-content: space-between;
+    min-height: 100vh;
 }
 
 .card {
+    color: black;
     border: none;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
     border-radius: 10px;
@@ -58,6 +58,9 @@ a {
     width: 100%; /* Adatta l'immagine alla larghezza della card */
 }
 
+i {
+    color: #00263e;
+}
 
 .btn-rounded {
     border-radius: 50px;
@@ -66,53 +69,57 @@ a {
 }
 
 .btn-outline-primary {
-    color: #27bcbc;
-    border-color: #27bcbc;
+    color: #00263e;
+    border-color: #00263e;
 }
 
 .btn-outline-primary:hover {
-    background-color: #27bcbc;
-    border-color: #27bcbc;
+    background-color: #002030;
+    border: none;
     color: white;
 }
 
 .btn-primary {
-    background-color: #27bcbc;
-    border-color: #27bcbc;
+    background-color: #00263e;
+    border: none;
+    color: white;
 }
+
 
 .btn-primary:hover {
-    background-color: #138496;
-    border-color: #117a8b;
+    background-color: #002030;
+    border: none;
+    color: white;
 }
 
-.navbar-light .navbar-brand {
-    font-weight: bold;
-    font-size: 1.5rem;
-}
-
-.navbar:hover {
-    background-color: #fff !important;
-    transition: background-color 0.3s ease;
-}
-
-.navbar-light .nav-link {
-    color: black;
-}
-
-.navbar-light .nav-link:hover {
-    color: #27bcbc;
-}
-
-.navbar-toggler-icon {
-    background-color: #27bcbc; /* Icona del toggler */
+.navbar {
+    background-color: #00263e;
 }
 
 .card-header {
-    background-color: #27bcbc; /* Arancione */
-    color: white; /* Testo bianco */
-}
-
-#materiali {
+    background-color: #00263e;
     color: white;
 }
+
+.navbar-logo {
+    width: 150px;
+    height: auto;
+}
+
+.login-logo {
+    width: 250px;
+    height: auto;
+}
+
+.footer {
+    background-color: #00263e;
+}
+
+.card-body.scrollable {
+    max-height: 300px; /* Altezza fissa per il contenuto */
+    overflow-y: auto; /* Abilita la barra di scorrimento verticale */
+}
+
+
+
+

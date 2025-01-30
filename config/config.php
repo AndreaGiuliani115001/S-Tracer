@@ -1,6 +1,6 @@
 <?php
 $host = 'localhost';
-$dbname = 'gene.sys-caracol';
+$dbname = 's_tracer';
 $user = 'root';
 $password = '';
 

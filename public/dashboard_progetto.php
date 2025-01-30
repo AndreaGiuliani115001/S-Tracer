@@ -2,6 +2,7 @@
 session_start();
 
 if (!isset($_SESSION['nome_utente'])) {
+    $_SESSION['redirect_to'] = $_SERVER['REQUEST_URI'];
     header('Location: login.php');
     exit;
 }
@@ -15,18 +16,11 @@ require_once '../includes/status_helper.php';
 $progetto_id = $_GET['progetto_id'] ?? null;
 
 // Recupera l'ID dell'ordine passato tramite GET
-$ordine_id = $_GET['ordine_id'] ?? null;
+$linea_produzione_id = $_GET['linea_produzione_id'] ?? null;
 
+$linea_produzione = LineeProduzione::getById($conn, $linea_produzione_id);
 $progetto = Progetti::getById($conn, $progetto_id);
 ?>
-
-
-<style>
-    i {
-        color: #27bcbc;
-    }
-
-</style>
 
 <!DOCTYPE html>
 <html lang="it">
@@ -45,20 +39,24 @@ $progetto = Progetti::getById($conn, $progetto_id);
         <!-- Dettagli del Progetto -->
         <div class="mb-4">
             <div class="card shadow-sm h-100 mb-4">
-                <img src="../assets/uploads/<?= htmlspecialchars($progetto['foto']) ?>" class="card-img-top"
-                     alt="<?= htmlspecialchars($progetto['nome']) ?>">
-
+                <?php if ($progetto['foto'] == NULL): ?>
+                    <img src="assets/uploads/placeholder.png" class="card-img-top" alt="placeholder.png">
+                <?php else: ?>
+                    <img src="assets/uploads/<?= htmlspecialchars($progetto['foto']) ?>" class="card-img-top"
+                         alt="<?= htmlspecialchars($progetto['foto']) ?>">
+                <?php endif; ?>
                 <div class="card-body d-flex flex-column">
                     <div class="d-flex justify-content-between align-items-center">
                         <!-- Paragrafo a sinistra -->
-                        <h5 class="card-title"><?= htmlspecialchars($progetto['nome']) ?> </h5>
+                        <h2 class="card-title"><?= htmlspecialchars($linea_produzione['nome']) ?>
+                            #<?= htmlspecialchars($progetto['matricola']) ?> </h2>
 
                         <!-- Bottoni a destra -->
                         <div class="btn-group" role="group">
                             <button type="button" class="btn btn-success btn-rounded">
-                                <a href="dashboard_materiali.php?progetto_id=<?= $progetto['id'] ?>&ordine_id=<?= $ordine_id ?>&tipo_entita=Progetto"
+                                <a href="dashboard_materiali.php?progetto_id=<?= $progetto['id'] ?>&ordine_id=<?= $linea_produzione_id ?>&tipo_entita=Progetto"
                                    class="btn-rounded m-1">
-                                    <i class="fas fa-cube" id="materiali"></i> Materiali
+                                    <i class="fas fa-cube text-white"></i> Materiali
                                 </a>
                             </button>
                             <button type="button" class="btn <?= getStatusTypeColor($progetto['stato']) ?> btn-rounded">
@@ -68,22 +66,22 @@ $progetto = Progetti::getById($conn, $progetto_id);
                             </button>
                         </div>
                     </div>
-                    <p class="card-title text-secondary">Matricola: <?= htmlspecialchars($progetto['matricola']) ?> </p>
-                    <p class="card-text flex-grow-1"><?= htmlspecialchars($progetto['descrizione']) ?></p>
+                    <br>
                     <div class="d-flex justify-content-between">
-                        <span><i class="fas fa-user text-primary me-2"></i> <strong>Cliente:</strong></span>
-                        <span><?= htmlspecialchars($progetto['cliente']) ?></span>
+                        <span><i class="fas fa-file-alt text-success me-2"></i> <strong>CIN:</strong></span>
+                        <span><?= htmlspecialchars($progetto['CIN']) ?></span>
                     </div>
                     <div class="d-flex justify-content-between mb-4">
                         <span><i class="fas fa-calendar-alt text-warning me-2"></i> <strong>Data di consegna:</strong></span>
                         <span><?= htmlspecialchars($progetto['data_di_consegna']) ?></span>
                     </div>
                 </div>
+
             </div>
 
             <!-- Card Produzione -->
             <div class="card shadow-sm w-100 mb-4">
-                <a href="dashboard_attività.php?progetto_id=<?= $progetto_id ?>&ordine_id=<?= $ordine_id ?>&stato=Produzione"
+                <a href="dashboard_attivita.php?progetto_id=<?= $progetto_id ?>&linea_produzione_id=<?= $linea_produzione_id ?>&stato=Produzione"
                    class="text-dark d-flex align-items-center">
                     <div class="card-body text-center">
                         <i class="fas fa-cogs fa-3x mb-3"></i>
@@ -95,7 +93,7 @@ $progetto = Progetti::getById($conn, $progetto_id);
 
             <!-- Card Manutenzione -->
             <div class="card shadow-sm w-100 mb-4">
-                <a href="dashboard_attività.php?progetto_id=<?= $progetto_id ?>&ordine_id=<?= $ordine_id ?>&stato=Manutenzione"
+                <a href="dashboard_attivita.php?progetto_id=<?= $progetto_id ?>&linea_produzione_id=<?= $linea_produzione_id ?>&stato=Manutenzione"
                    class="text-dark d-flex align-items-center">
                     <div class="card-body text-center">
                         <i class="fas fa-wrench fa-3x mb-3"></i>
@@ -110,7 +108,7 @@ $progetto = Progetti::getById($conn, $progetto_id);
                 <a href="#" class="text-dark d-flex align-items-center">
                     <div class="card-body text-center">
                         <i class="fas fa-leaf fa-3x text-success mb-3"></i>
-                        <h5 class="card-title">Digital Product Passport (DPP)</h5>
+                        <h5 class="card-title">Sostenibilità</h5>
                         <p class="card-text">Visualizza i dettagli di sostenibilità del progetto</p>
                     </div>
                 </a>
@@ -118,7 +116,7 @@ $progetto = Progetti::getById($conn, $progetto_id);
 
             <!-- Pulsante per tornare alla lista dei progetti -->
             <div>
-                <a href="dashboard_progetti.php?ordine_id=<?= $ordine_id ?>"
+                <a href="dashboard_progetti.php?linea_produzione_id=<?= $linea_produzione_id ?>"
                    class="btn btn-primary btn-lg rounded-pill">
                     <i class="fas fa-arrow-left text-white"></i>
                 </a>

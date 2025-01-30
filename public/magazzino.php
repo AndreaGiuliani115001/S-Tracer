@@ -46,7 +46,7 @@ $materiali = Materiali::getAll($conn);
                 <div class="card shadow-sm d-flex justify-content-center align-items-center">
                     <a href="#" class="text-decoration-none text-dark">
                         <div class="d-flex flex-column justify-content-center align-items-center">
-                            <i class="fas fa-plus fa-3x" style="color: #27bcbc;"></i>
+                            <i class="fas fa-plus fa-3x"></i>
                             <h5 class="mt-2">Aggiungi Materiale</h5>
                         </div>
                     </a>

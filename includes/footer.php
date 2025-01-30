@@ -7,8 +7,8 @@
     }
 </style>
 
-<footer class="bg-white text-black text-center py-3">
-    &copy; 2024 GENE.SYS. Tutti i diritti riservati.
+<footer class="footer text-white text-center py-3">
+    &copy; 2025 S-Tracer. Tutti i diritti riservati.
 </footer>
 
 

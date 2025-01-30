@@ -1,7 +1,6 @@
-# Reindirizza tutte le richieste alla cartella "public"
 RewriteEngine On
-RewriteCond %{REQUEST_URI} !^/public/
-RewriteRule ^(.*)$ /public/$1 [L]
 
-# Imposta "index.php" come predefinito
-DirectoryIndex index.php
+# Reindirizza tutte le richieste alla cartella public
+RewriteCond %{REQUEST_URI} !^/STracer/public/
+RewriteRule ^(.*)$ /STracer/public/$1 [L]
+
