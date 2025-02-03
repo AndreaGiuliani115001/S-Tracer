@@ -79,4 +79,16 @@ class Checklist
         return null;
     }
 
+    public static function create(PDO $conn, $nome, $descrizione, $componente_operazione_id)
+    {
+        $query = "INSERT INTO checklist (nome, descrizione, componente_operazione_id, created_at) 
+                  VALUES (:nome, :descrizione, :componente_operazione_id, NOW())";
+        $stmt = $conn->prepare($query);
+        $stmt->bindParam(':nome', $nome);
+        $stmt->bindParam(':descrizione', $descrizione);
+        $stmt->bindParam(':componente_operazione_id', $componente_operazione_id);
+        return $stmt->execute();
+    }
+
+
 }

@@ -2,16 +2,17 @@
 session_start();
 
 if (!isset($_SESSION['nome_utente'])) {
+    $_SESSION['redirect_to'] = $_SERVER['REQUEST_URI'];
     header('Location: login.php');
     exit;
 }
-
-$linea_produzione_id = $_GET['linea_produzione_id'];
 
 require_once '../config/config.php';
 require_once '../autoload.php';
 require_once '../includes/navbar.php';
 require_once '../includes/status_helper.php';
+
+$linea_produzione_id = $_GET['linea_produzione_id'];
 
 $progetti = Progetti::getByLineaProduzione($conn, $linea_produzione_id);
 $linea_produzione = LineeProduzione::getById($conn, $linea_produzione_id);
@@ -78,12 +79,12 @@ $linee_produzione = LineeProduzione::getAll($conn);
                                         data-bs-target="#editProgettoModal">
                                     <a onclick="editProgetto(<?= $progetto['id'] ?>, '<?= $progetto['matricola'] ?>', '<?= $progetto['CIN'] ?>', '<?= $progetto['data_di_consegna'] ?>', '<?= $progetto['stato'] ?>', '<?= $progetto['linea_produzione_id'] ?>')"
                                        class="btn-rounded m-1">
-                                        <i class="fas fa-pencil-alt text-white"></i>
+                                        <i class="fas fa-pencil-alt text-white m-1"></i>
                                     </a>
                                 </button>
                                 <button type="button" class="btn btn-danger btn-rounded" data-bs-toggle="modal" data-bs-target="#deleteProgettoModal">
                                     <a onclick="deleteProgetto(<?= $progetto['id'] ?>, <?= $progetto['linea_produzione_id'] ?>)" class="btn-rounded m-1">
-                                        <i class="fas fa-trash text-white"></i>
+                                        <i class="fas fa-trash text-white m-1"></i>
                                     </a>
                                 </button>
                             </div>

@@ -29,12 +29,33 @@ class Attività
 
 
     // Inserisce una nuova attività
-    public static function create(PDO $conn, $nome, $descrizione)
-    {
-        $query = "INSERT INTO attivita (nome, descrizione) VALUES (:nome, :descrizione)";
-        $stmt = $conn->prepare($query);
+    public static function create($conn, $nome, $descrizione, $stato) {
+        $stmt = $conn->prepare("INSERT INTO attivita (nome, descrizione, stato, created_at) VALUES (:nome, :descrizione, :stato, NOW())");
         $stmt->bindParam(':nome', $nome);
         $stmt->bindParam(':descrizione', $descrizione);
+        $stmt->bindParam(':stato', $stato);
+
+        if ($stmt->execute()) {
+            return $conn->lastInsertId();  // Restituisce l’ID dell’attività appena creata
+        }
+
+        return false;
+    }
+
+    public static function update($conn, $id, $nome, $descrizione, $stato) {
+        $stmt = $conn->prepare("UPDATE attivita SET nome = :nome, descrizione = :descrizione, stato = :stato WHERE id = :id");
+        $stmt->bindParam(':nome', $nome);
+        $stmt->bindParam(':descrizione', $descrizione);
+        $stmt->bindParam(':stato', $stato);
+        $stmt->bindParam(':id', $id);
         return $stmt->execute();
     }
+
+    public static function delete($conn, $id) {
+        $stmt = $conn->prepare("DELETE FROM attivita WHERE id = :id");
+        $stmt->bindParam(':id', $id);
+        return $stmt->execute();
+    }
+
+
 }

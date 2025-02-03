@@ -39,10 +39,10 @@ class Componenti
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-public
-static function getComponentiOperazioniChecklist($conn, $attivita_id, $progetto_id)
-{
-    $query = "
+    public
+    static function getComponentiOperazioniChecklist($conn, $attivita_id, $progetto_id)
+    {
+        $query = "
             SELECT c.id AS componente_id, 
                    c.nome AS componente_nome, 
                    o.id AS operazione_id, 
@@ -58,13 +58,61 @@ static function getComponentiOperazioniChecklist($conn, $attivita_id, $progetto_
             ORDER BY c.id, o.id;
         ";
 
-    $stmt = $conn->prepare($query);
-    $stmt->bindParam(':attivita_id', $attivita_id, PDO::PARAM_INT);
-    $stmt->bindParam(':progetto_id', $progetto_id, PDO::PARAM_INT);
-    $stmt->execute();
+        $stmt = $conn->prepare($query);
+        $stmt->bindParam(':attivita_id', $attivita_id, PDO::PARAM_INT);
+        $stmt->bindParam(':progetto_id', $progetto_id, PDO::PARAM_INT);
+        $stmt->execute();
 
-    return $stmt->fetchAll(PDO::FETCH_ASSOC);
-}
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public static function create($conn, $nome, $descrizione, $foto) {
+        $stmt = $conn->prepare("INSERT INTO componenti (nome, descrizione, foto, created_at) VALUES (:nome, :descrizione, :foto, NOW())");
+        $stmt->bindParam(':nome', $nome);
+        $stmt->bindParam(':descrizione', $descrizione);
+        $stmt->bindParam(':foto', $foto);
+
+        if ($stmt->execute()) {
+            return $conn->lastInsertId();  // Restituisce l'ID del componente appena creato
+        }
+
+        return false;
+    }
+
+    public static function update($conn, $id, $nome, $descrizione, $foto = null) {
+        $sql = "UPDATE componenti SET nome = :nome, descrizione = :descrizione";
+
+        if ($foto !== null) {
+            $sql .= ", foto = :foto";
+        }
+
+        $sql .= " WHERE id = :id";
+
+        $stmt = $conn->prepare($sql);
+        $stmt->bindParam(':nome', $nome);
+        $stmt->bindParam(':descrizione', $descrizione);
+        $stmt->bindParam(':id', $id);
+
+        if ($foto !== null) {
+            $stmt->bindParam(':foto', $foto);
+        }
+
+        return $stmt->execute();
+    }
+
+    public static function getFoto($conn, $id) {
+        $stmt = $conn->prepare("SELECT foto FROM componenti WHERE id = :id");
+        $stmt->bindParam(':id', $id);
+        $stmt->execute();
+        $result = $stmt->fetch();
+        return $result ? $result['foto'] : null;
+    }
+
+    public static function delete($conn, $id) {
+        $stmt = $conn->prepare("DELETE FROM componenti WHERE id = :id");
+        $stmt->bindParam(':id', $id);
+        return $stmt->execute();
+    }
 
 
 }
