@@ -54,7 +54,7 @@ $progetto = Progetti::getById($conn, $progetto_id);
                         <!-- Bottoni a destra -->
                         <div class="btn-group" role="group">
                             <button type="button" class="btn btn-success btn-rounded">
-                                <a href="dashboard_materiali.php?progetto_id=<?= $progetto['id'] ?>&ordine_id=<?= $linea_produzione_id ?>&tipo_entita=Progetto"
+                                <a href="dashboard_materiali.php?progetto_id=<?= $progetto['id'] ?>&linea_produzione_id=<?= $linea_produzione_id ?>"
                                    class="btn-rounded m-1">
                                     <i class="fas fa-cube text-white"></i> Materiali
                                 </a>
@@ -105,7 +105,7 @@ $progetto = Progetti::getById($conn, $progetto_id);
 
             <!-- Card Sostenibilità -->
             <div class="card shadow-sm w-100 mb-4">
-                <a href="#" class="text-dark d-flex align-items-center">
+                <a href="dashboard_sostenibilita.php?progetto_id=<?= $progetto_id ?>&linea_produzione_id=<?= $linea_produzione_id ?>&stato=Manutenzione" class="text-dark d-flex align-items-center">
                     <div class="card-body text-center">
                         <i class="fas fa-leaf fa-3x text-success mb-3"></i>
                         <h5 class="card-title">Sostenibilità</h5>

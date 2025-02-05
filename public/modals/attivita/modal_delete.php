@@ -13,8 +13,7 @@
                     <input type="hidden" name="linea_produzione_id" id="delete_linea_produzione_id">
                     <input type="hidden" name="stato" id="delete_stato" >
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annulla</button>
-                        <button type="submit" class="btn btn-danger">Elimina</button>
+                        <button type="submit" class="btn btn-danger">Conferma</button>
                     </div>
                 </form>
             </div>

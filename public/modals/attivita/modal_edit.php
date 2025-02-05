@@ -31,8 +31,7 @@
                     <input type="hidden" name="linea_produzione_id" id="edit_linea_produzione_id">
 
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annulla</button>
-                        <button type="submit" class="btn btn-warning">Salva Modifiche</button>
+                        <button type="submit" class="btn btn-warning"><i class="fas fa-save text-white" style="font-size: 24px;"></i></button>
                     </div>
                 </form>
             </div>

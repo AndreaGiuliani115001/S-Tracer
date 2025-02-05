@@ -64,8 +64,14 @@ $componenti = Componenti::getByAttivitaEProgetto($conn, $attivita_id, $progetto_
                         <?php endif; ?>
 
                         <div class="card-body d-flex flex-column">
-                            <div class="d-flex justify-content-between">
+                            <div class="d-flex justify-content-between align-items-center">
                                 <h4 class="card-title"><?= htmlspecialchars($componente['nome']) ?></h4>
+                                <!-- Bottone circolare con l'icona cube -->
+                                <a href="dashboard_materiali.php?progetto_id=<?= $progetto_id ?>&linea_produzione_id=<?= $linea_produzione_id ?>&stato=<?= $stato ?>&attivita_id=<?= $attivita_id ?>&componente_id=<?= $componente['componente_id'] ?>"
+                                   class="btn btn-success rounded-circle btn-lg d-flex justify-content-center align-items-center"
+                                   style="width: 40px; height: 40px;">
+                                    <i class="fas fa-cube text-white"></i> <!-- Icona Cube -->
+                                </a>
                             </div>
                             <div class="d-flex justify-content-between">
                                 <span><?= htmlspecialchars($componente['descrizione']) ?></span>
@@ -102,7 +108,7 @@ $componenti = Componenti::getByAttivitaEProgetto($conn, $attivita_id, $progetto_
                             <h5 class="mb-0">Operazioni per <?= htmlspecialchars($componente['nome']) ?></h5>
 
                             <div class="d-flex align-items-center">
-                                <button type="button" class="btn btn-primary btn-rounded"
+                                <button type="button" class="btn btn-primary btn-rounded btn-lg"
                                         data-bs-toggle="modal" data-bs-target="#createOperazioneModal"
                                         onclick="createOperazione('<?= $componente['componente_id'] ?>', '<?= $progetto_id ?>', '<?= $attivita_id ?>', '<?= $stato ?>', '<?= $linea_produzione_id ?>')">
                                     <i class="fas fa-plus text-white"></i>
@@ -121,7 +127,7 @@ $componenti = Componenti::getByAttivitaEProgetto($conn, $attivita_id, $progetto_
                                                 <div class="mt-auto">
                                                     <div class="btn-group" role="group">
                                                         <button type="button" class="btn btn-primary btn-rounded">
-                                                            <a href="dashboard_checklist.php?progetto_id=<?= $progetto_id ?>&linea_produzione_id=<?= $linea_produzione_id ?>&stato=<?= $stato ?>&attivita_id=<?= $attivita_id ?>&componente_id=<?= $componente['componente_id'] ?>&operazione_id=<?= $operazione['id'] ?>"
+                                                            <a href="dashboard_checklist.php?progetto_id=<?= $progetto_id ?>&linea_produzione_id=<?= $linea_produzione_id ?>&stato=<?= $stato ?>&attivita_id=<?= $attivita_id ?>&componente_id=<?= $componente['componente_id'] ?>&operazione_id=<?= $operazione['operazione_id'] ?>"
                                                                class="btn-rounded m-1">
                                                                 <i class="fas fa-eye text-white"></i>
                                                             </a>
@@ -241,7 +247,6 @@ $componenti = Componenti::getByAttivitaEProgetto($conn, $attivita_id, $progetto_
         document.getElementById('edit_nome_operazione').value = nome;
         document.getElementById('edit_descrizione_operazione').value = descrizione;
     }
-
 
 
 </script>

@@ -11,8 +11,7 @@
                     <input type="hidden" name="id" id="delete_id">
 
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annulla</button>
-                        <button type="submit" class="btn btn-danger">Elimina</button>
+                        <button type="submit" class="btn btn-danger">Conferma</button>
                     </div>
                 </form>
             </div>

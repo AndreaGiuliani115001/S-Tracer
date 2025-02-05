@@ -59,14 +59,6 @@ $domande = $checklist_data['domande'];
             <div class="card-header">
                 <div class="d-flex justify-content-between align-items-center">
                     <h3 class="mb-0"><?= htmlspecialchars($checklist['nome']) ?></h3>
-                    <div class="btn-group" role="group">
-                        <button type="button" class="btn btn-warning btn-rounded">
-                            <a href="#" class="btn-rounded"><i class="fas fa-pencil-alt text-white"></i></a>
-                        </button>
-                        <button type="button" class="btn btn-danger btn-rounded">
-                            <a href="#" class="btn-rounded"><i class="fas fa-trash text-white"></i></a>
-                        </button>
-                    </div>
                 </div>
             </div>
             <div class="card-body">
@@ -92,6 +84,11 @@ $domande = $checklist_data['domande'];
                                     $response = $responses[$domanda['id']] ?? null;
                                     $is_completed = !empty($response);
                                     ?>
+                                    <?php if(!empty($domanda['file_url'])): ?>
+                                        <a href="assets/uploads/<?= htmlspecialchars($domanda['file_url']) ?>"
+                                           target="_blank">Visualizza
+                                            file</a>
+                                    <?php endif;?>
                                     <!-- Input Dinamico -->
                                     <?php if ($domanda['tipo_risposta'] === 'testo'): ?>
                                         <textarea name="risposte[<?= $domanda['id'] ?>]" id="domanda_<?= $domanda['id'] ?>" class="form-control mt-2" rows="3" <?= $is_completed ? 'disabled' : '' ?>><?= htmlspecialchars($response['testo'] ?? '') ?></textarea>

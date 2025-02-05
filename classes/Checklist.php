@@ -90,5 +90,25 @@ class Checklist
         return $stmt->execute();
     }
 
+    public static function delete(PDO $conn, $checklist_id)
+    {
+        $query = "DELETE FROM checklist WHERE id = :checklist_id";
+        $stmt = $conn->prepare($query);
+        $stmt->bindParam(':checklist_id', $checklist_id, PDO::PARAM_INT);
+        return $stmt->execute();
+    }
+
+    public static function update(PDO $conn, $checklist_id, $nome, $descrizione)
+    {
+        $query = "UPDATE checklist 
+              SET nome = :nome, descrizione = :descrizione 
+              WHERE id = :checklist_id";
+        $stmt = $conn->prepare($query);
+        $stmt->bindParam(':nome', $nome);
+        $stmt->bindParam(':descrizione', $descrizione);
+        $stmt->bindParam(':checklist_id', $checklist_id, PDO::PARAM_INT);
+        return $stmt->execute();
+    }
+
 
 }

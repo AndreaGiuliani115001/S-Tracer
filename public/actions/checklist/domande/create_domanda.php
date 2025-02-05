@@ -28,7 +28,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (move_uploaded_file($_FILES['file']['tmp_name'], $target_file)) {
             $file_url = $file_name;  // Salviamo solo il nome del file nel DB
         } else {
-            header('Location: ../../../dashboard_checklist.php?checklist_id=' . $checklist_id . '&error=Errore durante il caricamento del file');
+            header('Location: ../../../dashboard_checklist.php?checklist_id=' . $checklist_id . '&progetto_id=' . $progetto_id .
+                '&attivita_id=' . $attivita_id .
+                '&linea_produzione_id=' . $linea_produzione_id .
+                '&stato=' . $stato . '&componente_id=' . $componente_id . '&operazione_id=' . $operazione_id . '&error=Errore durante il caricamento del file');
             exit;
         }
     }
